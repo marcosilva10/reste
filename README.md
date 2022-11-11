@@ -1,92 +1,110 @@
-# Openairinterface5g
+# OAI CU & DU #
 
-This is an unofficial fork of https://github.com/onosproject/openairinterface5g.git
+ONF's OAI CU & DU are O-RAN compliant disaggregated baseband units based on on [OpenAirInterface](http://www.openairinterface.org). The CU contains both CU-C & CU-U functionality and supports PDCP,GTPU,RRC & S1AP protocols along with S1, F1 & E2 interfaces. The DU has High-PHY(FAPI), MAC, RLC & RRC (for handing RRC Config messages from CU) protocols along with F1 interface support. Both CU & DU implements O-RAN's E2AP interface with support for the below Service Models:
+    - Key Performance Metrics (E2SM_KPM)
+    - RAN Slicing (E2SM_RSM)
+This component is intended for use with OAI based RU/DU hardware or SDRAN-in-a-Box (RiaB). 
 
-## Getting started
+## RIC Agent ##
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+The RIC Agent is an ONF addition to OAI that adds support for interfacing the OAI CU & DU with a O-RAN Real-time Intelligent Controller (RIC) over the E2 interface. To build OAI with this support, enable the *--build-ric-agent* build option:
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
-
-```
-cd existing_repo
-git remote add origin https://gitlab.altran.pt/RD/openairinterface5g.git
-git branch -M main
-git push -uf origin main
+```shell
+$ cd openairinterface5g
+$ source oaienv
+$ cd cmake_targets
+$ ./build_oai -c -I --eNB --UE -w USRP -g --build-ric-agent
 ```
 
-## Integrate with your tools
+The top-level *Makefile* builds docker images that include the RIC Agent:
 
-- [ ] [Set up project integrations](https://gitlab.altran.pt/RD/openairinterface5g/-/settings/integrations)
+```shell
+$ cd openairinterface5g
+$ make images
+```
+## RAN Slicing ##
 
-## Collaborate with your team
+ONF has implemented RAN Slicing service model to introduce Downlink (DL) & Uplink (UL) RAN Slicing functionality on the CU & DU and also to communicate with RSM xApp at the RIC. To build OAI with RAN slicing functionality, enable the *--build-ran-slicing* build option along with *--build-ric-agent*
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Automatically merge when pipeline succeeds](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+```shell
+$ cd openairinterface5g
+$ source oaienv
+$ cd cmake_targets
+$ ./build_oai -c -I --eNB --UE -w USRP -g --build-ric-agent --build-ran-slicing
+```
 
-## Test and Deploy
+## OpenAirInterface ##
+### OpenAirInterface License ###
 
-Use the built-in continuous integration in GitLab.
+OpenAirInterface is under OpenAirInterface Software Alliance license.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+ *  [OAI License Model](http://www.openairinterface.org/?page_id=101)
+ *  [OAI License v1.1 on our website](http://www.openairinterface.org/?page_id=698)
 
-***
+It is distributed under **OAI Public License V1.1**.
 
-# Editing this README
+The license information is distributed under [LICENSE](LICENSE) file in the same directory.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!).  Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+Please see [NOTICE](NOTICE.md) file for third party software that is included in the sources.
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+### Where to Start ###
 
-## Name
-Choose a self-explaining name for your project.
+ *  [The implemented features](./doc/FEATURE_SET.md)
+ *  [How to build](./doc/BUILD.md)
+ *  [How to run the modems](./doc/RUNMODEM.md)
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### OpenAirInterface repository structure ###
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+The OpenAirInterface (OAI) software is composed of the following parts: 
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+<pre>
+openairinterface5g
+├── ci-scripts        : Meta-scripts used by the OSA CI process. Contains also configuration files used day-to-day by CI.
+├── cmake_targets     : Build utilities to compile (simulation, emulation and real-time platforms), and generated build files.
+├── common            : Some common OAI utilities, other tools can be found at openair2/UTILS.
+├── doc               : Contains an up-to-date feature set list and starting tutorials.
+├── executables       : Top-level executable source files.
+├── LICENSE           : License file.
+├── maketags          : Script to generate emacs tags.
+├── nfapi             : Contains the NFAPI code. A local Readme file provides more details.
+├── openair1          : 3GPP LTE Rel-10/12 PHY layer / 3GPP NR Rel-15 layer. A local Readme file provides more details.
+│   ├── PHY
+│   ├── SCHED
+│   ├── SCHED_NBIOT
+│   ├── SCHED_NR
+│   ├── SCHED_NR_UE
+│   ├── SCHED_UE
+│   └── SIMULATION    : PHY RF simulation.
+├── openair2          : 3GPP LTE Rel-10 RLC/MAC/PDCP/RRC/X2AP + LTE Rel-14 M2AP implementation. Also 3GPP NR Rel-15 RLC/MAC/PDCP/RRC/X2AP.
+│   ├── COMMON
+│   ├── DOCS
+│   ├── ENB_APP
+│   ├── F1AP
+│   ├── GNB_APP
+│   ├── LAYER2/RLC/   : with the following subdirectories: UM_v9.3.0, TM_v9.3.0, and AM_v9.3.0.
+│   ├── LAYER2/PDCP/PDCP_v10.1.0
+│   ├── M2AP
+│   ├── MCE_APP
+│   ├── NETWORK_DRIVER
+│   ├── NR_PHY_INTERFACE
+│   ├── NR_UE_PHY_INTERFACE
+│   ├── PHY_INTERFACE
+│   ├── RIC_AGENT     : E2 client to interface with O-RAN compliant RIC
+│   ├── RRC
+│   ├── UTIL
+│   └── X2AP
+├── openair3          : 3GPP LTE Rel10 for S1AP, NAS GTPV1-U for both ENB and UE.
+│   ├── COMMON
+│   ├── DOCS
+│   ├── GTPV1-U
+│   ├── M3AP
+│   ├── MME_APP
+│   ├── NAS
+│   ├── S1AP
+│   ├── SCTP
+│   ├── SECU
+│   ├── TEST
+│   ├── UDP
+│   └── UTILS
+└── targets           : Top-level wrappers for unitary simulation for PHY channels, system-level emulation (eNB-UE with and without S1), and realtime eNB and UE and RRH GW.
+</pre>
